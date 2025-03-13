@@ -18,7 +18,6 @@ void APrintone::BeginPlay()
 	GetActorLocation();
 	UE_LOG(LogTemp, Warning, TEXT("Inizializzato"));
 	GetActorLocation();
-	
 }
 
 // Called every frame
@@ -26,5 +25,10 @@ void APrintone::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void APrintone::PrintaCOSE() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("L'ho fatta tutta mamma"));
 }
 

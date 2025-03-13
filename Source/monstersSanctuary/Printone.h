@@ -15,9 +15,15 @@ public:
 	// Sets default values for this actor's properties
 	APrintone();
 
+	UPROPERTY(EditAnywhere)
+	float FloatToPrint;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void PrintaCOSE();
 
 public:	
 	// Called every frame
