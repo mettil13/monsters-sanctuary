@@ -15,6 +15,8 @@ UShop::~UShop()
 
 void UShop::Buy(FString RowName)
 {
+
+	/*
 	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
 	PurchaseableItems->RemoveRow((FName)RowName);
 	// Remove money
@@ -27,5 +29,5 @@ void UShop::Buy(FString RowName)
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *(item->Name));
 
 	}
-
+	*/
 }
