@@ -18,6 +18,7 @@ void APrintone::BeginPlay()
 	GetActorLocation();
 	UE_LOG(LogTemp, Warning, TEXT("Inizializzato"));
 	GetActorLocation();
+	PrintaCOSE();
 }
 
 // Called every frame

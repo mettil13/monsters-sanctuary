@@ -15,6 +15,7 @@ UShop::~UShop()
 
 void UShop::Buy(FString RowName)
 {
+	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
 
 	/*
 	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
