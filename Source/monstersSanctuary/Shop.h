@@ -33,6 +33,11 @@ UCLASS(EditInlineNew, DefaultToInstanced, BlueprintType)
 class MONSTERSSANCTUARY_API UShop : public UObject
 {
 	GENERATED_BODY()
+protected:
+	UFUNCTION()
+	TArray<FShopItem> LoadPurchasedItems();
+	UFUNCTION()
+	TArray<FShopItem> GenerateItemsInShop();
 public:
 	UShop();
 	~UShop();

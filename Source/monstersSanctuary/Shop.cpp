@@ -32,3 +32,27 @@ void UShop::Buy(FString RowName)
 	}
 	*/
 }
+
+TArray<FShopItem> UShop::LoadPurchasedItems()
+{
+	TArray<FShopItem> itemsInShop;
+	return itemsInShop;
+}
+
+TArray<FShopItem> UShop::GenerateItemsInShop()
+{
+	TArray<FShopItem> itemsInShop; 
+	
+	TArray<FShopItem*> items; 
+	PurchaseableItems->GetAllRows("", items);
+
+	for (FShopItem* i : items) {
+		/*
+		if (PurchasedItems.Contains(*i) == false) {
+			itemsInShop.Add(*i);
+		}
+		*/
+	}
+	
+	return itemsInShop;
+}
