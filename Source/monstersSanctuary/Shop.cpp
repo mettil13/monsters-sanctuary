@@ -46,13 +46,24 @@ TArray<FShopItem> UShop::GenerateItemsInShop()
 	TArray<FShopItem*> items; 
 	PurchaseableItems->GetAllRows("", items);
 
-	for (FShopItem* i : items) {
-		/*
+	for (FShopItem const* i : items) {
+
 		if (PurchasedItems.Contains(*i) == false) {
 			itemsInShop.Add(*i);
 		}
-		*/
+		
 	}
+
 	
 	return itemsInShop;
 }
+
+bool FShopItem::operator==(const FShopItem& obj) const
+{
+	return (Name == obj.Name &&
+		Price == obj.Price &&
+		PlaceableItem == obj.PlaceableItem &&
+		PlaceableSlot == obj.PlaceableSlot &&
+		UpgradeOfRowName == obj.UpgradeOfRowName);
+}
+

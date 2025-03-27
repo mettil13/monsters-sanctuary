@@ -22,6 +22,8 @@ public:
 	TSubclassOf<AActor> PlaceableSlot; // must be of type BP_PlaceableSlot
 	UPROPERTY(EditAnywhere)
 	FString UpgradeOfRowName; // if UpgradeOfRowName is not empty, this ShopItem is an upgrade of another ShopItem
+
+	bool operator==(const FShopItem& obj) const;
 };
 
 
