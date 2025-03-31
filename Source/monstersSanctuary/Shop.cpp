@@ -5,8 +5,7 @@
 
 UShop::UShop()
 {
-
-
+	
 }
 
 UShop::~UShop()
@@ -16,6 +15,13 @@ UShop::~UShop()
 void UShop::Buy(FString RowName)
 {
 	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
+	if (rowToPurchase == NULL || ItemsInShop.IsEmpty()) {
+		return;
+	}
+
+	PurchasedItems.Add(*rowToPurchase);
+	RefreshItemsInShop();
+
 
 	/*
 	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
@@ -39,6 +45,10 @@ TArray<FShopItem> UShop::LoadPurchasedItems()
 	return itemsInShop;
 }
 
+void UShop::RefreshItemsInShop() {
+	ItemsInShop = GenerateItemsInShop();
+}
+
 TArray<FShopItem> UShop::GenerateItemsInShop()
 {
 	TArray<FShopItem> itemsInShop; 
@@ -54,8 +64,28 @@ TArray<FShopItem> UShop::GenerateItemsInShop()
 		
 	}
 
+	for (int i = itemsInShop.Num() - 1; i >= 0; i--) {
+		FString upgradeName = itemsInShop[i].UpgradeOfRowName;
+		if (!IsValidUpgrade(upgradeName, itemsInShop)) {
+			itemsInShop.RemoveAt(i);
+		}
+	}
+
 	
 	return itemsInShop;
+}
+
+bool UShop::IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop) {
+	if (upgradeName == "") {
+		return false;
+	}
+
+	for (FShopItem i : itemsInShop) {
+		if (i.UpgradeOfRowName == upgradeName) {
+			return false;
+		}
+	}
+	return true;
 }
 
 bool FShopItem::operator==(const FShopItem& obj) const

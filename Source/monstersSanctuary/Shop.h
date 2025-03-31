@@ -40,6 +40,8 @@ protected:
 	TArray<FShopItem> LoadPurchasedItems();
 	UFUNCTION()
 	TArray<FShopItem> GenerateItemsInShop();
+	UFUNCTION()
+	bool IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop);
 public:
 	UShop();
 	~UShop();
@@ -53,6 +55,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Buy(FString RowName);
+	UFUNCTION(BlueprintCallable)
+	void RefreshItemsInShop();
 };
 
 
