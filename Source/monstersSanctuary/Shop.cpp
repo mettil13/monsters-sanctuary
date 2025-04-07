@@ -12,6 +12,11 @@ UShop::~UShop()
 {
 }
 
+void UShop::Init()
+{
+	RefreshItemsInShop();
+}
+
 void UShop::Buy(FString RowName)
 {
 	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
@@ -77,15 +82,15 @@ TArray<FShopItem> UShop::GenerateItemsInShop()
 
 bool UShop::IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop) {
 	if (upgradeName == "") {
-		return false;
+		return true;
 	}
 
 	for (FShopItem i : itemsInShop) {
-		if (i.UpgradeOfRowName == upgradeName) {
-			return false;
+		if (i.Name == upgradeName) {
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool FShopItem::operator==(const FShopItem& obj) const

@@ -48,11 +48,13 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UDataTable* PurchaseableItems;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FShopItem> ItemsInShop;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FShopItem> PurchasedItems;
 
+	UFUNCTION(BlueprintCallable)
+	void Init();
 	UFUNCTION(BlueprintCallable)
 	void Buy(FString RowName);
 	UFUNCTION(BlueprintCallable)
