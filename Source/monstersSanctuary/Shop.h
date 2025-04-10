@@ -17,6 +17,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float Price;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UTexture* Thumbnail;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AActor> PlaceableItem;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AActor> PlaceableSlot; // must be of type BP_PlaceableSlot
