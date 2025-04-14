@@ -60,7 +60,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Init();
 	UFUNCTION(BlueprintCallable)
-	void Buy(FString RowName);
+	bool Buy(FShopItem item);
 	UFUNCTION(BlueprintCallable)
 	void RefreshItemsInShop();
 };

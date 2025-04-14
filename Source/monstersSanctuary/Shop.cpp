@@ -17,31 +17,19 @@ void UShop::Init()
 	RefreshItemsInShop();
 }
 
-void UShop::Buy(FString RowName)
+bool UShop::Buy(FShopItem item)
 {
-	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
-	if (rowToPurchase == NULL || ItemsInShop.IsEmpty()) {
-		return;
+
+	if (ItemsInShop.IsEmpty() || !ItemsInShop.Contains(item)) {
+		return false;
 	}
 
-	PurchasedItems.Add(*rowToPurchase);
+	ItemsInShop.Remove(item);
+	PurchasedItems.Add(item);
 	RefreshItemsInShop();
 
+	return true;
 
-	/*
-	FShopItem* rowToPurchase = PurchaseableItems->FindRow<FShopItem>((FName)RowName, "");
-	PurchaseableItems->RemoveRow((FName)RowName);
-	// Remove money
-	UE_LOG(LogTemp, Warning, TEXT("removed %s"), *RowName);
-	PurchasedItems->AddRow((FName)RowName, *rowToPurchase);
-
-	TArray<FShopItem*> items;
-	PurchaseableItems->GetAllRows("", items);
-	for (FShopItem* item : items) {
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *(item->Name));
-
-	}
-	*/
 }
 
 TArray<FShopItem> UShop::LoadPurchasedItems()
