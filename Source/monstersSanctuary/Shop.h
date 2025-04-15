@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlaceableSlotInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Shop.generated.h"
 
 
@@ -21,9 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture* Thumbnail;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<AActor> PlaceableItem;
+	TSubclassOf<class AActor> PlaceableItem;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<AActor> PlaceableSlot; // must be of type BP_PlaceableSlot
+	FString PlaceableSlotName;
+	//TScriptInterface<IPlaceableSlotInterface> PlaceableSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString UpgradeOfRowName; // if UpgradeOfRowName is not empty, this ShopItem is an upgrade of another ShopItem
 
@@ -40,10 +43,17 @@ class MONSTERSSANCTUARY_API UShop : public UObject
 {
 	GENERATED_BODY()
 protected:
+	UPROPERTY()
+	TArray<AActor*> PlaceableSlotsInScene;
+	
 	UFUNCTION()
 	TArray<FShopItem> LoadPurchasedItems();
 	UFUNCTION()
 	TArray<FShopItem> GenerateItemsInShop();
+	UFUNCTION()
+	TArray<AActor*> GeneratePlaceableSlotsList();
+	UFUNCTION()
+	AActor* SearchInPlaceableSlotListByName(FString name);
 	UFUNCTION()
 	bool IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop);
 public:
@@ -63,6 +73,8 @@ public:
 	bool Buy(FShopItem item);
 	UFUNCTION(BlueprintCallable)
 	void RefreshItemsInShop();
+	UFUNCTION(BlueprintCallable)
+	void RefreshPlaceableSlotsInScene();
 };
 
 

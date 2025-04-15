@@ -15,6 +15,7 @@ UShop::~UShop()
 void UShop::Init()
 {
 	RefreshItemsInShop();
+	RefreshPlaceableSlotsInScene();
 }
 
 bool UShop::Buy(FShopItem item)
@@ -26,6 +27,19 @@ bool UShop::Buy(FShopItem item)
 
 	ItemsInShop.Remove(item);
 	PurchasedItems.Add(item);
+
+	AActor* itemPlaceableSlot = SearchInPlaceableSlotListByName(item.PlaceableSlotName);
+	if (itemPlaceableSlot == NULL) {
+		RefreshPlaceableSlotsInScene();
+		itemPlaceableSlot = SearchInPlaceableSlotListByName(item.PlaceableSlotName);
+	}
+
+	if (itemPlaceableSlot && item.PlaceableItem) {
+		if (itemPlaceableSlot->GetClass()->ImplementsInterface(UPlaceableSlotInterface::StaticClass())) {
+			IPlaceableSlotInterface* itemPlaceableSlotInterface = Cast<IPlaceableSlotInterface>(itemPlaceableSlot);
+			itemPlaceableSlotInterface->Execute_SpawnPlaceable(itemPlaceableSlot, item.PlaceableItem);
+		}
+	}
 	RefreshItemsInShop();
 
 	return true;
@@ -40,6 +54,11 @@ TArray<FShopItem> UShop::LoadPurchasedItems()
 
 void UShop::RefreshItemsInShop() {
 	ItemsInShop = GenerateItemsInShop();
+}
+
+void UShop::RefreshPlaceableSlotsInScene()
+{
+	PlaceableSlotsInScene = GeneratePlaceableSlotsList();
 }
 
 TArray<FShopItem> UShop::GenerateItemsInShop()
@@ -68,6 +87,26 @@ TArray<FShopItem> UShop::GenerateItemsInShop()
 	return itemsInShop;
 }
 
+TArray<AActor*> UShop::GeneratePlaceableSlotsList()
+{
+	TArray<AActor*> placeableSlotActors;
+	UGameplayStatics::GetAllActorsWithInterface(this, UPlaceableSlotInterface::StaticClass(), placeableSlotActors);
+
+	return placeableSlotActors;
+}
+
+AActor* UShop::SearchInPlaceableSlotListByName(FString name)
+{
+	for (AActor* slot : PlaceableSlotsInScene) {
+		//UE_LOG(LogTemp, Warning, TEXT("slot: %s"), *(slot->GetActorNameOrLabel()));
+		if (slot->GetActorNameOrLabel() == name) {
+			return slot;
+		}
+	}
+
+	return NULL;
+}
+
 bool UShop::IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop) {
 	if (upgradeName == "") {
 		return true;
@@ -86,7 +125,7 @@ bool FShopItem::operator==(const FShopItem& obj) const
 	return (Name == obj.Name &&
 		Price == obj.Price &&
 		PlaceableItem == obj.PlaceableItem &&
-		PlaceableSlot == obj.PlaceableSlot &&
+		PlaceableSlotName == obj.PlaceableSlotName &&
 		UpgradeOfRowName == obj.UpgradeOfRowName);
 }
 
