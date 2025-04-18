@@ -27,3 +27,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
+
+USTRUCT(BlueprintType)
+struct FCreatureStats {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float hunger;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float thirst;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float slumber;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float cleanness;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float happyness;
+};
