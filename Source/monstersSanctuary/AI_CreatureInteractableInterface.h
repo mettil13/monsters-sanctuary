@@ -18,4 +18,6 @@ class IAI_CreatureInteractableInterface
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void GetInteractableStats(float& health, bool& isBroken, int& level);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void IsInsideCenter(bool& result);
 };

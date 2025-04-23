@@ -24,6 +24,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool lowLevelStructureVisible;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
+	bool noFornitureVisible;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool CreatureIsntDoingAnything;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool sadCreatureVisible;
@@ -35,6 +37,12 @@ public:
 	bool needFoodCreatureVisible;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool needCleanCreatureVisible;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
+	bool noCreatureInside;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Photo settings")
+	FString photoFileName;
 };
 
 /**
@@ -57,6 +65,10 @@ public:
 	float statsMedianMultiplier;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Creature evaluation")
 	FCreatureStats statsMinimumToConsiderPositive;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Creature evaluation")
+	float bonusForeachCreature;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Creature evaluation")
+	float outsideCenterMultiplierCreature;
 
 	// interactable evaluation
 
@@ -66,6 +78,17 @@ public:
 	float interactableIsBrokenMultiplier;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable evaluation")
 	float interactableLevelMultiplier;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable evaluation")
+	float bonusForeachInteractable;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable evaluation")
+	float outsideCenterMultiplierInteractable;
+
+	// forniture evaluation
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Forniture evaluation")
+	float bonusForeachForniture;
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Forniture evaluation")
+	float outsideCenterMultiplierForniture;*/
 
 	
 
@@ -73,8 +96,8 @@ public:
 	void EvaluateScene(
 		////inputs
 		TArray<AActor*> allCreatures,
-		TArray<AActor*> allInteractable,
-		//TArray<AActor*> allFornitures,
+		TArray<AActor*> allInteractables,
+		TArray<AActor*> allFornitures,
 		// outputs
 		FEvaluateSceneResult& result
 	);

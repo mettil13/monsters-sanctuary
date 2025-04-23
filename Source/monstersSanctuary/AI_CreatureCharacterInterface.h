@@ -20,4 +20,6 @@ class IAI_CreatureCharacterInterface
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void GetCreatureStats(FCreatureStats& result);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void IsInsideCenter(bool& result);
 };
