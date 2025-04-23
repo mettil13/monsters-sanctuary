@@ -94,7 +94,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EvaluateScene(
-		////inputs
+		//inputs
 		TArray<AActor*> allCreatures,
 		TArray<AActor*> allInteractables,
 		TArray<AActor*> allFornitures,
