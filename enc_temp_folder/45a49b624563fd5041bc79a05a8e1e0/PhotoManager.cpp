@@ -2,8 +2,7 @@
 
 #include "PhotoManager.h"
 
-void UPhotoManager::EvaluateScene
-(
+void UPhotoManager::EvaluateScene(
 	////inputs
 	TArray<AActor*> allCreatures,
 	TArray<AActor*> allInteractables,
@@ -52,11 +51,11 @@ void UPhotoManager::EvaluateScene
 		if (stats.happyness < statsMinimumToConsiderPositive.happyness) result.sadCreatureVisible = true;
 
 		// median cunstruction
-		currentMedian += ((stats.hunger + statsEvaluateAdder.hunger) * statsEvaluateMultiplier.hunger);
-		currentMedian += ((stats.thirst + statsEvaluateAdder.thirst) * statsEvaluateMultiplier.thirst);
-		currentMedian += ((stats.slumber + statsEvaluateAdder.slumber) * statsEvaluateMultiplier.slumber);
-		currentMedian += ((stats.cleanness + statsEvaluateAdder.cleanness) * statsEvaluateMultiplier.cleanness);
-		currentMedian += ((stats.happyness + statsEvaluateAdder.happyness) * statsEvaluateMultiplier.happyness);
+		currentMedian += (stats.hunger * statsEvaluateMultiplier.hunger) + statsEvaluateAdder.hunger;
+		currentMedian += (stats.thirst * statsEvaluateMultiplier.thirst) + statsEvaluateAdder.thirst;
+		currentMedian += (stats.slumber * statsEvaluateMultiplier.slumber) + statsEvaluateAdder.slumber;
+		currentMedian += (stats.cleanness * statsEvaluateMultiplier.cleanness) + statsEvaluateAdder.cleanness;
+		currentMedian += (stats.happyness * statsEvaluateMultiplier.happyness) + statsEvaluateAdder.happyness;
 		currentMedian /= 5.0;
 		UE_LOG(LogTemp, Warning, TEXT("creature %s evaluated with : %f"), *creature->GetName(), currentMedian);
 		

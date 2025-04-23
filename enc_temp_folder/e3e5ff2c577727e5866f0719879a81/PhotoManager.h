@@ -83,12 +83,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Interactable evaluation")
 	float outsideCenterMultiplierInteractable;
 
-	// furniture evaluation
+	// forniture evaluation
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Furniture evaluation")
 	float bonusForeachFurniture;
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Furniture evaluation")
-	float outsideCenterMultiplierFurniture;*/
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Forniture evaluation")
+	float outsideCenterMultiplierForniture;*/
 
 	
 
