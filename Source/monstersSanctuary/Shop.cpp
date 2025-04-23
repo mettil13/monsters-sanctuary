@@ -61,6 +61,18 @@ void UShop::RefreshPlaceableSlotsInScene()
 	PlaceableSlotsInScene = GeneratePlaceableSlotsList();
 }
 
+TArray<FShopItem> UShop::GetPurchasedItemsWithoutUpgrades()
+{
+	TArray<FShopItem> purchasedItemsWithoutUpgrades;
+	for (FShopItem const i : PurchasedItems) {
+		if (i.UpgradeOfRow.IsNull()) {
+			purchasedItemsWithoutUpgrades.Add(i);
+		}
+	}
+
+	return purchasedItemsWithoutUpgrades;
+}
+
 TArray<FShopItem> UShop::GenerateItemsInShop()
 {
 	TArray<FShopItem> itemsInShop; 
@@ -77,8 +89,15 @@ TArray<FShopItem> UShop::GenerateItemsInShop()
 	}
 
 	for (int i = itemsInShop.Num() - 1; i >= 0; i--) {
+		/*
 		FString upgradeName = itemsInShop[i].UpgradeOfRowName;
-		if (!IsValidUpgrade(upgradeName, itemsInShop)) {
+		if (!IsValidUpgrade(upgradeName, PurchasedItems)) {
+			itemsInShop.RemoveAt(i);
+		}
+		*/
+
+		FDataTableRowHandle upgrade = itemsInShop[i].UpgradeOfRow;
+		if (!IsValidUpgrade(upgrade, PurchasedItems)) {
 			itemsInShop.RemoveAt(i);
 		}
 	}
@@ -107,7 +126,7 @@ AActor* UShop::SearchInPlaceableSlotListByName(FString name)
 	return NULL;
 }
 
-bool UShop::IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop) {
+bool UShop::IsValidUpgradeByName(FString upgradeName, TArray<FShopItem> itemsInShop) {
 	if (upgradeName == "") {
 		return true;
 	}
@@ -120,12 +139,28 @@ bool UShop::IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop) {
 	return false;
 }
 
+bool UShop::IsValidUpgrade(FDataTableRowHandle upgrade, TArray<FShopItem> itemsInShop) {
+	if (upgrade.IsNull()) {
+		return true;
+	}
+
+	for (FShopItem i : itemsInShop) {
+		if (i == *upgrade.GetRow<FShopItem>("")) {
+			return true;
+		}
+	}
+	return false;
+}
+
 bool FShopItem::operator==(const FShopItem& obj) const
 {
 	return (Name == obj.Name &&
 		Price == obj.Price &&
+		Description == obj.Description &&
+		Thumbnail == obj.Thumbnail &&
 		PlaceableItem == obj.PlaceableItem &&
 		PlaceableSlotName == obj.PlaceableSlotName &&
-		UpgradeOfRowName == obj.UpgradeOfRowName);
+		UpgradeOfRow == obj.UpgradeOfRow &&
+		Category == obj.Category);
 }
 

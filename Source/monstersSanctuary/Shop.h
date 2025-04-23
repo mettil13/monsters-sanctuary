@@ -9,6 +9,17 @@
 
 
 
+UENUM(BlueprintType)
+enum ShopCategory
+{
+	FOOD UMETA(DisplayName = "FOOD"),
+	WATER UMETA(DisplayName = "WATER"),
+	BED UMETA(DisplayName = "BED"),
+	WC UMETA(DisplayName = "WC"),
+	TOY UMETA(DisplayName = "TOY"),
+	DECORATION UMETA(DisplayName = "DECORATION")
+};
+
 USTRUCT(BlueprintType)
 struct FShopItem : public FTableRowBase {
 	GENERATED_BODY()
@@ -28,7 +39,11 @@ public:
 	FString PlaceableSlotName;
 	//TScriptInterface<IPlaceableSlotInterface> PlaceableSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FString UpgradeOfRowName; // if UpgradeOfRowName is not empty, this ShopItem is an upgrade of another ShopItem
+	FDataTableRowHandle  UpgradeOfRow; // if UpgradeOfRow is not null, this ShopItem is an upgrade of another ShopItem
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int Level; // if UpgradeOfRow is not null, Level shows the level of the upgrade
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TEnumAsByte<ShopCategory> Category;
 
 	bool operator==(const FShopItem& obj) const;
 };
@@ -55,7 +70,9 @@ protected:
 	UFUNCTION()
 	AActor* SearchInPlaceableSlotListByName(FString name);
 	UFUNCTION()
-	bool IsValidUpgrade(FString upgradeName, TArray<FShopItem> itemsInShop);
+	bool IsValidUpgradeByName(FString upgradeName, TArray<FShopItem> itemsInShop);
+	UFUNCTION()
+	bool IsValidUpgrade(FDataTableRowHandle upgrade, TArray<FShopItem> itemsInShop);
 public:
 	UShop();
 	~UShop();
@@ -75,6 +92,8 @@ public:
 	void RefreshItemsInShop();
 	UFUNCTION(BlueprintCallable)
 	void RefreshPlaceableSlotsInScene();
+	UFUNCTION()
+	TArray<FShopItem> GetPurchasedItemsWithoutUpgrades();
 };
 
 
