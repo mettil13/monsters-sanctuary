@@ -24,7 +24,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool lowLevelStructureVisible;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
-	bool noFornitureVisible;
+	bool noFurnitureVisible;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool CreatureIsntDoingAnything;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
@@ -85,8 +85,8 @@ public:
 
 	// forniture evaluation
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Forniture evaluation")
-	float bonusForeachForniture;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Furniture evaluation")
+	float bonusForeachFurniture;
 	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Forniture evaluation")
 	float outsideCenterMultiplierForniture;*/
 
@@ -97,7 +97,7 @@ public:
 		//inputs
 		TArray<AActor*> allCreatures,
 		TArray<AActor*> allInteractables,
-		TArray<AActor*> allFornitures,
+		TArray<AActor*> allFurnitures,
 		// outputs
 		FEvaluateSceneResult& result
 	);

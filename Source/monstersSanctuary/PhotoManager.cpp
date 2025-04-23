@@ -6,7 +6,7 @@ void UPhotoManager::EvaluateScene(
 	////inputs
 	TArray<AActor*> allCreatures,
 	TArray<AActor*> allInteractables,
-	TArray<AActor*> allFornitures,
+	TArray<AActor*> allFurnitures,
 	// outputs
 	FEvaluateSceneResult& result
 ) 
@@ -19,7 +19,7 @@ void UPhotoManager::EvaluateScene(
 	result.value = 0; // can be only positive and defines the intensity of patreon donations
 	result.brokenStructureVisible = false;
 	result.lowLevelStructureVisible = false;
-	result.noFornitureVisible = false;
+	result.noFurnitureVisible = false;
 	result.sadCreatureVisible = false;
 	result.CreatureIsntDoingAnything = false;
 	result.needFoodCreatureVisible = false;
@@ -120,16 +120,16 @@ void UPhotoManager::EvaluateScene(
 
 
 	// evaluate forniture inside
-	int fornitureNumber = 0;
-	for (AActor* forniture : allFornitures) {
-		if (forniture == NULL || !forniture->WasRecentlyRendered(0.5)) {
+	int furnitureNumber = 0;
+	for (AActor* furniture : allFurnitures) {
+		if (furniture == NULL || !furniture->WasRecentlyRendered(0.5)) {
 			continue; // skip the forniture if it is not rendered
 		}
-		fornitureNumber++;
+		furnitureNumber++;
 	}
-	if (fornitureNumber == 0) result.noFornitureVisible = true;
+	if (furnitureNumber == 0) result.noFurnitureVisible = true;
 	// final value adding
-	result.value += bonusForeachForniture * creatureNumber;
+	result.value += bonusForeachFurniture * creatureNumber;
 	
 
 
