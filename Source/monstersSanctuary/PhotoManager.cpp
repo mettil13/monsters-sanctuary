@@ -27,7 +27,7 @@ void UPhotoManager::EvaluateScene
 	result.needWaterCreatureVisible = false;
 	result.needBedCreatureVisible = false;
 	result.needCleanCreatureVisible = false;
-	result.noCreatureInside = false;
+	result.noCreatureInside = true;
 
 
 
@@ -64,6 +64,7 @@ void UPhotoManager::EvaluateScene
 		bool wellCentered = false;
 		creatureInterface->Execute_IsInsideCenter(creature, wellCentered);
 		if (!wellCentered) currentMedian *= outsideCenterMultiplierCreature;
+		else result.noCreatureInside = false;
 
 		statsMedian += currentMedian;
 		creatureNumber++;
@@ -113,6 +114,7 @@ void UPhotoManager::EvaluateScene
 		interactableMedian += currentValue;
 		interactableNumber++;
 	}
+	if (interactableNumber != 0) interactableMedian /= interactableNumber;
 	UE_LOG(LogTemp, Warning, TEXT("interactable median median for interactables : %f"), interactableMedian);
 	// final value adding
 	result.value += interactableMedian;
