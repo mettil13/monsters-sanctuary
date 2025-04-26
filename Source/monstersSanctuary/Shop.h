@@ -39,7 +39,7 @@ public:
 	FString PlaceableSlotName;
 	//TScriptInterface<IPlaceableSlotInterface> PlaceableSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FDataTableRowHandle  UpgradeOfRow; // if UpgradeOfRow is not null, this ShopItem is an upgrade of another ShopItem
+	FDataTableRowHandle UpgradeOfRow; // if UpgradeOfRow is not null, this ShopItem is an upgrade of another ShopItem
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int Level; // if UpgradeOfRow is not null, Level shows the level of the upgrade
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -49,6 +49,7 @@ public:
 };
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuyItemDelegate, FDataTableRowHandle, item);
 
 /**
  * 
@@ -62,17 +63,17 @@ protected:
 	TArray<AActor*> PlaceableSlotsInScene;
 	
 	UFUNCTION()
-	TArray<FShopItem> LoadPurchasedItems();
+	TArray<FDataTableRowHandle> LoadPurchasedItems();
 	UFUNCTION()
-	TArray<FShopItem> GenerateItemsInShop();
+	TArray<FDataTableRowHandle> GenerateItemsInShop();
 	UFUNCTION()
 	TArray<AActor*> GeneratePlaceableSlotsList();
 	UFUNCTION()
 	AActor* SearchInPlaceableSlotListByName(FString name);
 	UFUNCTION()
-	bool IsValidUpgradeByName(FString upgradeName, TArray<FShopItem> itemsInShop);
+	bool IsValidUpgradeByName(FString upgradeName, TArray<FDataTableRowHandle> itemsInShop);
 	UFUNCTION()
-	bool IsValidUpgrade(FDataTableRowHandle upgrade, TArray<FShopItem> itemsInShop);
+	bool IsValidUpgrade(FDataTableRowHandle upgrade, TArray<FDataTableRowHandle> itemsInShop);
 public:
 	UShop();
 	~UShop();
@@ -80,20 +81,22 @@ public:
 	UPROPERTY(EditAnywhere)
 	UDataTable* PurchaseableItems;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FShopItem> ItemsInShop;
+	TArray<FDataTableRowHandle> ItemsInShop;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FShopItem> PurchasedItems;
+	TArray<FDataTableRowHandle> PurchasedItems;
+	UPROPERTY(EditAnywhere, BlueprintAssignable)
+	FOnBuyItemDelegate OnBuyItem;
 
 	UFUNCTION(BlueprintCallable)
 	void Init();
 	UFUNCTION(BlueprintCallable)
-	bool Buy(FShopItem item);
+	bool Buy(FDataTableRowHandle item);
 	UFUNCTION(BlueprintCallable)
 	void RefreshItemsInShop();
 	UFUNCTION(BlueprintCallable)
 	void RefreshPlaceableSlotsInScene();
 	UFUNCTION()
-	TArray<FShopItem> GetPurchasedItemsWithoutUpgrades();
+	TArray<FDataTableRowHandle> GetPurchasedItemsWithoutUpgrades();
 };
 
 

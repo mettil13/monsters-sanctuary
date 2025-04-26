@@ -18,7 +18,7 @@ void UShop::Init()
 	RefreshPlaceableSlotsInScene();
 }
 
-bool UShop::Buy(FShopItem item)
+bool UShop::Buy(FDataTableRowHandle item)
 {
 
 	if (ItemsInShop.IsEmpty() || !ItemsInShop.Contains(item)) {
@@ -28,27 +28,28 @@ bool UShop::Buy(FShopItem item)
 	ItemsInShop.Remove(item);
 	PurchasedItems.Add(item);
 
-	AActor* itemPlaceableSlot = SearchInPlaceableSlotListByName(item.PlaceableSlotName);
+	AActor* itemPlaceableSlot = SearchInPlaceableSlotListByName(item.GetRow<FShopItem>("")->PlaceableSlotName);
 	if (itemPlaceableSlot == NULL) {
 		RefreshPlaceableSlotsInScene();
-		itemPlaceableSlot = SearchInPlaceableSlotListByName(item.PlaceableSlotName);
+		itemPlaceableSlot = SearchInPlaceableSlotListByName(item.GetRow<FShopItem>("")->PlaceableSlotName);
 	}
 
-	if (itemPlaceableSlot && item.PlaceableItem) {
+	if (itemPlaceableSlot && item.GetRow<FShopItem>("")->PlaceableItem) {
 		if (itemPlaceableSlot->GetClass()->ImplementsInterface(UPlaceableSlotInterface::StaticClass())) {
 			IPlaceableSlotInterface* itemPlaceableSlotInterface = Cast<IPlaceableSlotInterface>(itemPlaceableSlot);
-			itemPlaceableSlotInterface->Execute_SpawnPlaceable(itemPlaceableSlot, item.PlaceableItem);
+			itemPlaceableSlotInterface->Execute_SpawnPlaceable(itemPlaceableSlot, item.GetRow<FShopItem>("")->PlaceableItem);
 		}
 	}
-	RefreshItemsInShop();
 
+	RefreshItemsInShop();
+	OnBuyItem.Broadcast(item);
 	return true;
 
 }
 
-TArray<FShopItem> UShop::LoadPurchasedItems()
+TArray<FDataTableRowHandle> UShop::LoadPurchasedItems()
 {
-	TArray<FShopItem> itemsInShop;
+	TArray<FDataTableRowHandle> itemsInShop;
 	return itemsInShop;
 }
 
@@ -61,11 +62,11 @@ void UShop::RefreshPlaceableSlotsInScene()
 	PlaceableSlotsInScene = GeneratePlaceableSlotsList();
 }
 
-TArray<FShopItem> UShop::GetPurchasedItemsWithoutUpgrades()
+TArray<FDataTableRowHandle> UShop::GetPurchasedItemsWithoutUpgrades()
 {
-	TArray<FShopItem> purchasedItemsWithoutUpgrades;
-	for (FShopItem const i : PurchasedItems) {
-		if (i.UpgradeOfRow.IsNull()) {
+	TArray<FDataTableRowHandle> purchasedItemsWithoutUpgrades;
+	for (FDataTableRowHandle const i : PurchasedItems) {
+		if (i.GetRow<FShopItem>("")->UpgradeOfRow.IsNull()) {
 			purchasedItemsWithoutUpgrades.Add(i);
 		}
 	}
@@ -73,14 +74,20 @@ TArray<FShopItem> UShop::GetPurchasedItemsWithoutUpgrades()
 	return purchasedItemsWithoutUpgrades;
 }
 
-TArray<FShopItem> UShop::GenerateItemsInShop()
+TArray<FDataTableRowHandle> UShop::GenerateItemsInShop()
 {
-	TArray<FShopItem> itemsInShop; 
+	TArray<FDataTableRowHandle> itemsInShop;
 	
-	TArray<FShopItem*> items; 
-	PurchaseableItems->GetAllRows("", items);
+	TArray<FDataTableRowHandle*> items;
+	TArray<FName> rowNames = PurchaseableItems->GetRowNames();
+	for (FName name : rowNames) {
+		FDataTableRowHandle* row = new FDataTableRowHandle();
+		row->DataTable = PurchaseableItems;
+		row->RowName = name;
+		items.Add(row);
+	}
 
-	for (FShopItem const* i : items) {
+	for (FDataTableRowHandle const* i : items) {
 
 		if (PurchasedItems.Contains(*i) == false) {
 			itemsInShop.Add(*i);
@@ -89,14 +96,7 @@ TArray<FShopItem> UShop::GenerateItemsInShop()
 	}
 
 	for (int i = itemsInShop.Num() - 1; i >= 0; i--) {
-		/*
-		FString upgradeName = itemsInShop[i].UpgradeOfRowName;
-		if (!IsValidUpgrade(upgradeName, PurchasedItems)) {
-			itemsInShop.RemoveAt(i);
-		}
-		*/
-
-		FDataTableRowHandle upgrade = itemsInShop[i].UpgradeOfRow;
+		FDataTableRowHandle upgrade = itemsInShop[i].GetRow<FShopItem>("")->UpgradeOfRow;
 		if (!IsValidUpgrade(upgrade, PurchasedItems)) {
 			itemsInShop.RemoveAt(i);
 		}
@@ -126,26 +126,26 @@ AActor* UShop::SearchInPlaceableSlotListByName(FString name)
 	return NULL;
 }
 
-bool UShop::IsValidUpgradeByName(FString upgradeName, TArray<FShopItem> itemsInShop) {
+bool UShop::IsValidUpgradeByName(FString upgradeName, TArray<FDataTableRowHandle> itemsInShop) {
 	if (upgradeName == "") {
 		return true;
 	}
 
-	for (FShopItem i : itemsInShop) {
-		if (i.Name == upgradeName) {
+	for (FDataTableRowHandle i : itemsInShop) {
+		if (i.GetRow<FShopItem>("")->Name == upgradeName) {
 			return true;
 		}
 	}
 	return false;
 }
 
-bool UShop::IsValidUpgrade(FDataTableRowHandle upgrade, TArray<FShopItem> itemsInShop) {
+bool UShop::IsValidUpgrade(FDataTableRowHandle upgrade, TArray<FDataTableRowHandle> itemsInShop) {
 	if (upgrade.IsNull()) {
 		return true;
 	}
 
-	for (FShopItem i : itemsInShop) {
-		if (i == *upgrade.GetRow<FShopItem>("")) {
+	for (FDataTableRowHandle i : itemsInShop) {
+		if (i == upgrade) {
 			return true;
 		}
 	}
