@@ -74,6 +74,19 @@ TArray<FDataTableRowHandle> UShop::GetPurchasedItemsWithoutUpgrades()
 	return purchasedItemsWithoutUpgrades;
 }
 
+int UShop::GetNumberOfPurchasedItemsOfCategory(ShopCategory category)
+{
+	TArray<FDataTableRowHandle> purchasedItemsWithoutUpgrades = GetPurchasedItemsWithoutUpgrades();
+	int counter = 0;
+	for (FDataTableRowHandle row : purchasedItemsWithoutUpgrades) {
+		if (row.GetRow<FShopItem>("")->Category == category) {
+			counter++;
+		}
+	}
+
+	return counter;
+}
+
 TArray<FDataTableRowHandle> UShop::GenerateItemsInShop()
 {
 	TArray<FDataTableRowHandle> itemsInShop;

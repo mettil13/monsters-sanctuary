@@ -95,8 +95,10 @@ public:
 	void RefreshItemsInShop();
 	UFUNCTION(BlueprintCallable)
 	void RefreshPlaceableSlotsInScene();
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	TArray<FDataTableRowHandle> GetPurchasedItemsWithoutUpgrades();
+	UFUNCTION(BlueprintCallable)
+	int GetNumberOfPurchasedItemsOfCategory(ShopCategory category);
 };
 
 
