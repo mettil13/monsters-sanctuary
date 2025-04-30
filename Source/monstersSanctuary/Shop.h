@@ -63,8 +63,6 @@ protected:
 	TArray<AActor*> PlaceableSlotsInScene;
 	
 	UFUNCTION()
-	TArray<FDataTableRowHandle> LoadPurchasedItems();
-	UFUNCTION()
 	TArray<FDataTableRowHandle> GenerateItemsInShop();
 	UFUNCTION()
 	TArray<AActor*> GeneratePlaceableSlotsList();
@@ -89,6 +87,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Init();
+	UFUNCTION(BlueprintCallable)
+	void LoadPurchasedItems(TArray<FDataTableRowHandle> purchasedItemsToLoad);
 	UFUNCTION(BlueprintCallable)
 	bool Buy(FDataTableRowHandle item);
 	UFUNCTION(BlueprintCallable)

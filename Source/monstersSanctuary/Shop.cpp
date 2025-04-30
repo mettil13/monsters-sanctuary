@@ -47,10 +47,10 @@ bool UShop::Buy(FDataTableRowHandle item)
 
 }
 
-TArray<FDataTableRowHandle> UShop::LoadPurchasedItems()
+void UShop::LoadPurchasedItems(TArray<FDataTableRowHandle> purchasedItemsToLoad)
 {
-	TArray<FDataTableRowHandle> itemsInShop;
-	return itemsInShop;
+	PurchasedItems = purchasedItemsToLoad;
+	RefreshItemsInShop();
 }
 
 void UShop::RefreshItemsInShop() {
