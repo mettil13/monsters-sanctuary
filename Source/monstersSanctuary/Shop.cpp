@@ -170,7 +170,7 @@ bool FShopItem::operator==(const FShopItem& obj) const
 	return (Name == obj.Name &&
 		Price == obj.Price &&
 		Description == obj.Description &&
-		Thumbnail == obj.Thumbnail &&
+		//Thumbnail == obj.Thumbnail &&
 		PlaceableItem == obj.PlaceableItem &&
 		PlaceableSlotName == obj.PlaceableSlotName &&
 		UpgradeOfRow == obj.UpgradeOfRow &&

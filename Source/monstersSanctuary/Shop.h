@@ -31,8 +31,8 @@ public:
 	float Price;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString Description;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UTexture* Thumbnail;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	//UTexture* Thumbnail;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class AActor> PlaceableItem;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
