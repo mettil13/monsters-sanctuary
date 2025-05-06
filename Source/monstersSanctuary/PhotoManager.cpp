@@ -43,13 +43,14 @@ void UPhotoManager::EvaluateScene
 		creatureInterface->Execute_GetCreatureStats(creature, stats);
 
 		float currentMedian = 0;
+		float finalMultiplier = 1;
 
 		// hint construction
-		if (stats.hunger < statsMinimumToConsiderPositive.hunger) result.needFoodCreatureVisible = true;
-		if (stats.thirst < statsMinimumToConsiderPositive.thirst) result.needWaterCreatureVisible = true;
-		if (stats.slumber < statsMinimumToConsiderPositive.slumber) result.needBedCreatureVisible = true;
-		if (stats.cleanness < statsMinimumToConsiderPositive.cleanness) result.needCleanCreatureVisible = true;
-		if (stats.happyness < statsMinimumToConsiderPositive.happyness) result.sadCreatureVisible = true;
+		if (stats.hunger < statsMinimumToConsiderPositive.hunger) { result.needFoodCreatureVisible = true; finalMultiplier *= multiplierIfCreatureHasNegativeProperty; }
+		if (stats.thirst < statsMinimumToConsiderPositive.thirst) { result.needWaterCreatureVisible = true; finalMultiplier *= multiplierIfCreatureHasNegativeProperty; }
+		if (stats.slumber < statsMinimumToConsiderPositive.slumber) { result.needBedCreatureVisible = true; finalMultiplier *= multiplierIfCreatureHasNegativeProperty; }
+		if (stats.cleanness < statsMinimumToConsiderPositive.cleanness) { result.needCleanCreatureVisible = true; finalMultiplier *= multiplierIfCreatureHasNegativeProperty; }
+		if (stats.happyness < statsMinimumToConsiderPositive.happyness) { result.sadCreatureVisible = true; finalMultiplier *= multiplierIfCreatureHasNegativeProperty; }
 
 		// median cunstruction
 		currentMedian += ((stats.hunger + statsEvaluateAdder.hunger) * statsEvaluateMultiplier.hunger);
@@ -58,14 +59,15 @@ void UPhotoManager::EvaluateScene
 		currentMedian += ((stats.cleanness + statsEvaluateAdder.cleanness) * statsEvaluateMultiplier.cleanness);
 		currentMedian += ((stats.happyness + statsEvaluateAdder.happyness) * statsEvaluateMultiplier.happyness);
 		currentMedian /= 5.0;
-		UE_LOG(LogTemp, Warning, TEXT("creature %s evaluated with : %f"), *creature->GetName(), currentMedian);
 		
 		// well centered
 		bool wellCentered = false;
 		creatureInterface->Execute_IsInsideCenter(creature, wellCentered);
 		if (!wellCentered) currentMedian *= outsideCenterMultiplierCreature;
 		else result.noCreatureInside = false;
-
+		currentMedian *= finalMultiplier;
+		UE_LOG(LogTemp, Warning, TEXT("creature %s evaluated with : %f"), *creature->GetName(), currentMedian);
+		
 		statsMedian += currentMedian;
 		creatureNumber++;
 	}
@@ -96,20 +98,20 @@ void UPhotoManager::EvaluateScene
 
 		// median construction
 		currentValue = (health * interactableHealthValueMultiplier);
-		if (broken) { 
-			currentValue *= interactableIsBrokenMultiplier; 
-			result.brokenStructureVisible = true;
-		}
 		currentValue += level * interactableLevelMultiplier;
 		if (level == 1) {
 			result.lowLevelStructureVisible = true;
 		}
-		UE_LOG(LogTemp, Warning, TEXT("interactable %s evaluated with : %f"), *interactable->GetName(), currentValue);
+		if (broken) { 
+			currentValue *= interactableIsBrokenMultiplier; 
+			result.brokenStructureVisible = true;
+		}
 		
 		// well centered
 		bool wellCentered = false;
 		interactableInterface->Execute_IsInsideCenter(interactable, wellCentered);
 		if (!wellCentered) currentValue *= outsideCenterMultiplierCreature;
+		UE_LOG(LogTemp, Warning, TEXT("interactable %s evaluated with : %f"), *interactable->GetName(), currentValue);
 		
 		interactableMedian += currentValue;
 		interactableNumber++;

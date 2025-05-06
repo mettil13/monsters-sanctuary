@@ -69,6 +69,8 @@ public:
 	float bonusForeachCreature;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Creature evaluation")
 	float outsideCenterMultiplierCreature;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Creature evaluation")
+	float multiplierIfCreatureHasNegativeProperty;
 
 	// interactable evaluation
 
