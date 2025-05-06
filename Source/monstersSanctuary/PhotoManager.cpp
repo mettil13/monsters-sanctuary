@@ -9,7 +9,7 @@ void UPhotoManager::EvaluateScene
 	TArray<AActor*> allInteractables,
 	TArray<AActor*> allFurnitures,
 	// outputs
-	FEvaluateSceneResult& result
+	FEvaluateSceneResult& result	
 ) 
 {
 	result = FEvaluateSceneResult(); // create new Scene result
