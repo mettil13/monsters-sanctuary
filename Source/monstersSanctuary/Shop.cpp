@@ -131,8 +131,18 @@ AActor* UShop::SearchInPlaceableSlotListByName(FString name)
 {
 	for (AActor* slot : PlaceableSlotsInScene) {
 		//UE_LOG(LogTemp, Warning, TEXT("slot: %s"), *(slot->GetActorNameOrLabel()));
+		/*
 		if (slot->GetActorNameOrLabel() == name) {
 			return slot;
+		}
+		*/
+		if (slot->GetClass()->ImplementsInterface(UPlaceableSlotInterface::StaticClass())) {
+			IPlaceableSlotInterface* itemPlaceableSlotInterface = Cast<IPlaceableSlotInterface>(slot);
+			FString id = itemPlaceableSlotInterface->Execute_GetId(slot);
+
+			if (id == name) {
+				return slot;
+			}
 		}
 	}
 

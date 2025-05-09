@@ -17,5 +17,7 @@ class IPlaceableSlotInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	FString GetId();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void SpawnPlaceable(TSubclassOf<class AActor> placeable);
 };
