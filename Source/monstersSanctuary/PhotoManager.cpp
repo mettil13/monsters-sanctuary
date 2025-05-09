@@ -146,22 +146,59 @@ void UPhotoManager::EvaluateScene
 
 
 
-	// image generation
-	// Generate a filename based on the current date
-	const FDateTime Now = FDateTime::Now();
-	// store screenshot in Project directory next to main UProject/EXE based on the build type
-	#if WITH_EDITOR
-	const FString ImageDirectory = FString::Printf(TEXT("%s%s"), *FPaths::ProjectDir(), TEXT("Screenshots"));
-	#else
-	const FString ImageDirectory = FString::Printf(TEXT("%s/../%s"), *FPaths::ProjectDir(), TEXT("Screenshots"));
-	#endif
-	const FString ImageFilename = FString::Printf(TEXT("%s/Screenshot_%d%02d%02d_%02d%02d%02d_%03d.png"), *ImageDirectory, Now.GetYear(), Now.GetMonth(), Now.GetDay(), Now.GetHour(), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
-	FScreenshotRequest::RequestScreenshot(ImageFilename, false, false);
-	UE_LOG(LogTemp, Warning, TEXT("Saved screenshot at; %s"), *ImageFilename);
-	result.photoFileName = ImageFilename;
+	//// image generation
+	//// Generate a filename based on the current date
+	//const FDateTime Now = FDateTime::Now();
+	//// store screenshot in Project directory next to main UProject/EXE based on the build type
+	//#if WITH_EDITOR
+	//const FString ImageDirectory = FString::Printf(TEXT("%s%s"), *FPaths::ProjectDir(), TEXT("Screenshots"));
+	//#else
+	//const FString ImageDirectory = FString::Printf(TEXT("%s/../%s"), *FPaths::ProjectDir(), TEXT("Screenshots"));
+	//#endif
+	//const FString ImageFilename = FString::Printf(TEXT("%s/Screenshot_%d%02d%02d_%02d%02d%02d_%03d.png"), *ImageDirectory, Now.GetYear(), Now.GetMonth(), Now.GetDay(), Now.GetHour(), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
+	//FScreenshotRequest::RequestScreenshot(ImageFilename, false, false);
+	//UE_LOG(LogTemp, Warning, TEXT("Saved screenshot at; %s"), *ImageFilename);
+
+	//UGameViewportClient::OnScreenshotCaptured().AddUFunction();
 
 
+	//FString FullPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*ImageFilename);
+	//result.photoFileName = FullPath;
 
+	//UGameViewportClient* Viewport = ()->GetGameViewport();
+	//FIntPoint ViewSize = Viewport->Viewport->GetSizeXY();
+	// 
 	// returns a positive value old(between -1 and 1) to evaluate the scene ( checking also if the creatures and the interactables are inside the photo )
 }
-
+//
+//UTexture2D* UPhotoManager::ConverResultImageToTexture2D
+//(
+//	//inputs
+//	FString imagePath
+//) 
+//{
+//	FVector2D ViewPortSize = FVector2D(1, 1);
+//
+//	if (GEngine && GEngine->GameViewport)
+//	{
+//		GEngine->GameViewport->GetViewportSize( /*out*/ViewPortSize);
+//	}
+//
+//	UE_LOG(LogTemp, Warning, TEXT("viewport size : %f,%f"), ViewPortSize[0], ViewPortSize[1]);
+//
+//	TArray<uint8> LoadedData;
+//	FFileHelper::LoadFileToArray(LoadedData, *imagePath);
+//	UTexture2D* text = UTexture2D::CreateTransient(ViewPortSize[0], ViewPortSize[1]);
+//
+//	return text;
+//}
+//
+//void UPhotoManager::ScreenShotCaptured(int32 Width, int32 Height, const TArray<FColor>& Bitmap) 
+//{
+//	//UTexture2D* text = UTexture2D::createtran
+//}
+//
+//static void ScreenshotCaptured(int32 Width, int32 Height, const TArray<FColor>& Bitmap) 
+//{
+//
+//}

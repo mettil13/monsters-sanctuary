@@ -17,8 +17,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float value;
 
-
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool brokenStructureVisible;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
@@ -40,9 +38,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="EvaluateHints")
 	bool noCreatureInside;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Photo settings")
 	FString photoFileName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Photo settings")
+	UMaterialInstanceDynamic* photoMaterial;
 };
 
 /**
@@ -92,7 +91,8 @@ public:
 	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Furniture evaluation")
 	float outsideCenterMultiplierFurniture;*/
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "All results")
+	TArray<FEvaluateSceneResult> results;
 
 	UFUNCTION(BlueprintCallable)
 	void EvaluateScene(
@@ -100,7 +100,18 @@ public:
 		TArray<AActor*> allCreatures,
 		TArray<AActor*> allInteractables,
 		TArray<AActor*> allFurnitures,
-		// outputs
+		//outputs
 		FEvaluateSceneResult& result
 	);
+
+	//UFUNCTION(BlueprintCallable)
+	//UTexture2D* ConverResultImageToTexture2D(
+	//	//inputs
+	//	FString imagePath
+	//);
+
+	//UFUNCTION(BlueprintCallable)
+	//void ScreenShotCaptured(int32 Width, int32 Height, const TArray<FColor>& Bitmap);
 };
+
+//static void ScreenshotCaptured(int32 Width, int32 Height, const TArray<FColor>& Bitmap);
